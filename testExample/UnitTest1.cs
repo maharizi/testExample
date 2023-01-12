@@ -7,26 +7,29 @@ namespace Guru99Demo
     class testExample
     {
         IWebDriver driver;
+        BrowserFactory browserFactory;
 
         [SetUp]
         public void startBrowser()
         {
-            driver = new ChromeDriver("D:\\drivers\\");
+            //driver = new ChromeDriver("D:\\drivers\\");
+
+            browserFactory = new BrowserFactory();
+            browserFactory.InitBrowser("chrome");
+            browserFactory.LoadApplication("https://www.ebay.com/");
         }
 
         [Test]
         public void test()
         {
 
-            driver.Url = "https://www.ebay.com/";
-
-            var SearchBar = driver.FindElement(By.Id("gh-ac"));
+            var SearchBar = browserFactory.driver.FindElement(By.Id("gh-ac"));
             SearchBar.SendKeys("mause");
 
-            var clickOption = driver.FindElement(By.Id("gh-btn"));
+            var clickOption = browserFactory.driver.FindElement(By.Id("gh-btn"));
             clickOption.Click();
 
-            var items = driver.FindElements(By.ClassName("s-item__link"));
+            var items = browserFactory.driver.FindElements(By.ClassName("s-item__link"));
 
             Assert.IsTrue(items.Count > 0);
 

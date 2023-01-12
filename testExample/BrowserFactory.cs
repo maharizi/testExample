@@ -10,9 +10,9 @@ namespace Guru99Demo
     class BrowserFactory
     {
         private static readonly IDictionary<string, IWebDriver> Drivers = new Dictionary<string, IWebDriver>();
-        private static IWebDriver driver;
+        public IWebDriver driver;
 
-        public static IWebDriver Driver
+        public IWebDriver Driver
         {
             get
             {
