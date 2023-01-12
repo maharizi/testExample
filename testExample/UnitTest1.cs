@@ -6,7 +6,6 @@ namespace Guru99Demo
 {
     class testExample
     {
-        IWebDriver driver;
         BrowserFactory browserFactory;
 
         [SetUp]
