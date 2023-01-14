@@ -1,5 +1,6 @@
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.DevTools.V85.CSS;
 using System.Xml.Linq;
 
 namespace Guru99Demo
@@ -7,28 +8,35 @@ namespace Guru99Demo
     class testExample
     {
         BrowserFactory browserFactory;
+        string key;
 
         [SetUp]
         public void startBrowser()
         {
-            //driver = new ChromeDriver("D:\\drivers\\");
-
             browserFactory = new BrowserFactory();
-            browserFactory.InitBrowser("chrome");
-            browserFactory.LoadApplication("https://www.ebay.com/");
+            key = browserFactory.InitBrowser("chrome");
+            browserFactory.LoadApplication(key, "https://www.ebay.com/");
+
+            /*browserFactory = new BrowserFactory();
+            key = browserFactory.InitBrowser("chrome");
+            browserFactory.LoadApplication(key, "https://www.ebay.com/");*/
+
+            /*browserFactory = new BrowserFactory();
+            key = browserFactory.InitBrowser("firefox");
+            browserFactory.LoadApplication(key, "https://www.ebay.com/");*/
         }
 
         [Test]
         public void test()
         {
 
-            var SearchBar = browserFactory.driver.FindElement(By.Id("gh-ac"));
+            var SearchBar = browserFactory.drivers[key].FindElement(By.Id("gh-ac"));
             SearchBar.SendKeys("mause");
 
-            var clickOption = browserFactory.driver.FindElement(By.Id("gh-btn"));
+            var clickOption = browserFactory.drivers[key].FindElement(By.Id("gh-btn"));
             clickOption.Click();
 
-            var items = browserFactory.driver.FindElements(By.ClassName("s-item__link"));
+            var items = browserFactory.drivers[key].FindElements(By.ClassName("s-item__link"));
 
             Assert.IsTrue(items.Count > 0);
 
@@ -37,7 +45,6 @@ namespace Guru99Demo
                 items[i].Click();
                 System.Console.WriteLine(items[i].Text);
             }
-
         }
 
         [TearDown]

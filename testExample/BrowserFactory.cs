@@ -10,55 +10,50 @@ namespace Guru99Demo
     class BrowserFactory
     {
         private static readonly IDictionary<string, IWebDriver> Drivers = new Dictionary<string, IWebDriver>();
-        public IWebDriver driver;
+        public Dictionary<string, IWebDriver> drivers= new Dictionary <string, IWebDriver>();
+        IWebDriver driver;
 
-        public IWebDriver Driver
-        {
-            get
-            {
-                if (driver == null)
-                    throw new NullReferenceException("The WebDriver browser instance was not initialized. You should first call the method InitBrowser.");
-                return driver;
-            }
-            private set
-            {
-                driver = value;
-            }
-        }
-
-        public void InitBrowser(string browserName)
+        public string InitBrowser(string browserName)
         {
             switch (browserName.ToUpper())
-            { 
+            {
                 case "IE":
-                    if (driver == null)
+                    if (!this.drivers.ContainsKey("IE"))
                     {
-                        driver = new InternetExplorerDriver("C:\\drivers\\");
-                        Drivers.Add("IE", driver);
+                        driver = new InternetExplorerDriver("C:\\bootcamp ness\\drivers");
+                        this.drivers.Add("IE", driver);
                     }
-                    break;
+                    return "IE";
 
                 case "CHROME":
-                    if (driver == null)
+                    if (!this.drivers.ContainsKey("CROME"))
                     {
-                        driver = new ChromeDriver("C:\\drivers\\");
-                        Drivers.Add("Chrome", driver);
+                        driver = new ChromeDriver("C:\\bootcamp ness\\drivers");
+                        this.drivers.Add("Chrome", driver);
                     }
-                    break;
+                    return "Chrome";
+                case "FIREFOX":
+                    if (!this.drivers.ContainsKey("FireFox"))
+                    {
+                        driver = new FirefoxDriver("C:\\bootcamp ness\\drivers");
+                        this.drivers.Add("FireFox", driver);
+                    }
+                    return "FireFox";
             }
+            return "";
         }
 
-        public void LoadApplication(string url)
+        public void LoadApplication(string brouserName, string url)
         {
-            Driver.Url = url;
+            this.drivers[brouserName].Url = url;
         }
 
-        public static void CloseAllDrivers()
+        public void CloseAllDrivers()
         {
-            foreach (var key in Drivers.Keys)
+            foreach (var key in drivers.Keys)
             {
-                Drivers[key].Close();
-                Drivers[key].Quit();
+                this.drivers[key].Close();
+                this.drivers[key].Quit();
             }
         }
     }
